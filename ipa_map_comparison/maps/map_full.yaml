@@ -1,0 +1,7 @@
+image: /home/srd-ps/git/ipa_navigation_catkin/src/evaluation_tools/ipa_map_comparison/maps/map_full.pgm
+resolution: 0.050000
+origin: [-37.400002, -24.799999, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

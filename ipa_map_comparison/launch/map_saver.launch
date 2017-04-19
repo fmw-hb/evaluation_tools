@@ -1,0 +1,6 @@
+<launch>
+<arg name ="map" default="$(find ipa_map_comparison)/maps/map"/>
+<node name="map_saver" pkg="map_server" type="map_saver" args ="-f $(arg map)" output="screen">
+<remap from="map" to="map_hmm"/>
+</node>
+</launch>

@@ -1,0 +1,7 @@
+string eval_file_name
+int32 number_of_neighbours
+float32 neighbourhood_score
+
+---
+bool success
+

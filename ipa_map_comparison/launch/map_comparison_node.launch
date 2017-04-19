@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="map_file" default="$(find ipa_map_comparison)/maps/map_full.yaml"/>
+  <arg name="ref_map_file" default="$(find ipa_map_comparison)/maps/map_full.yaml"/>
+  <arg name="number_of_neighbours" default="0"/>
+  <arg name="neighbourhood_score" default="0"/>
+  <arg name="eval_file_name" default="eval.txt"/>
+
+  <!-- Run the map server -->
+    <node name="map_server_ground_truth" pkg="map_server" type="map_server" args="$(arg ref_map_file)" >
+    <remap from="map" to="static_map"/>
+    </node>
+
+    <!-- Run the map server -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" >
+    <remap from="static_map" to="map"/>
+    </node>
+
+<node name="ipa_map_comparison_node" pkg="ipa_map_comparison" type="ipa_map_comparison_node" output="screen">
+    <param name="number_of_neighbours" value="$(arg number_of_neighbours)"/>
+    <param name="neighbourhood_score" value="$(arg neighbourhood_score)"/>
+    <param name="eval_file_name" value="$(arg eval_file_name)"/>
+</node>
+</launch>
