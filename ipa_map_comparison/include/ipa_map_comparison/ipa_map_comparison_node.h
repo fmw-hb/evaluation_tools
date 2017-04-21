@@ -4,7 +4,7 @@
 //ros includes
 #include <ros/ros.h>
 #include <nav_msgs/GetMap.h>
-#include <ipa_map_comparison/StartMapEval.h>
+//#include <ipa_map_comparison/StartMapEval.h>
 #include <ros/package.h>
 #include <iostream>
 #include <fstream>

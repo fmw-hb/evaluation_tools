@@ -62,12 +62,12 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
   ros::NodeHandle pn("~");
 
-  ros::Subscriber sub = n.subscribe("base_pose_ground_truth", 1, compare);
+  //ros::Subscriber sub = n.subscribe("base_pose_ground_truth", 1, compare);
 
   ros::Duration t(1);
 
-  tf::TransformListener listener;
-  tf::StampedTransform transform;
+  tf::TransformListener listener, listener_ekf;
+  tf::StampedTransform transform, transform_ekf;
   std::string map("/map");
   std::string name;
 
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     std::cout << "it failed" << std::endl;
   }
 
-  if (!pn.getParam("path", path))
+  if (!pn.getParam("measure_path", path))
     path = "measure.txt";
 
   if (!pn.getParam("count_max", count_max))
@@ -108,15 +108,34 @@ int main(int argc, char **argv)
     }
     float trans_x = transform.getOrigin().getX();
     float trans_y = transform.getOrigin().getY();
-    ROS_INFO_STREAM("trans_x: " << trans_x << " trans_y: " << trans_y);
+    float trans_theta = transform.getRotation().getAngle();
+    ROS_INFO_STREAM("trans_x: " << trans_x << " trans_y: " << trans_y << " trans_theta: " << trans_theta);
+    
+    try
+    {
+      listener_ekf.lookupTransform(map, name+"/base_link_ekf", ros::Time(0), transform_ekf);
+    }
+    catch (tf::TransformException& ex)
+    {
+      ROS_ERROR("%s", ex.what());
+    }
+    float ekf_x = transform_ekf.getOrigin().getX();
+    float ekf_y = transform_ekf.getOrigin().getY();
+    float ekf_theta = transform_ekf.getRotation().getAngle();
+    ROS_INFO_STREAM("ekf_x: " << ekf_x << " ekf_y: " << ekf_y << " ekf_theta: " << ekf_theta);
 
-    float r = std::sqrt((trans_x - gt_x)*(trans_x - gt_x)+(trans_y - gt_y)*(trans_y - gt_y));
-    float err_y = fabs(trans_y-gt_y);
+
+    //float r = std::sqrt((trans_x - gt_x)*(trans_x - gt_x)+(trans_y - gt_y)*(trans_y - gt_y));
+    //float err_y = fabs(trans_y-gt_y);
+    float err_x = fabs(trans_x-ekf_x);
+    float err_y = fabs(trans_y-ekf_y);
+    float err_theta = fabs(trans_theta-ekf_theta);
+    float r = std::sqrt(pow(err_x,2)+pow(err_y,2));
     ROS_INFO_STREAM("R: " << r );
-    ROS_INFO_STREAM("Err_y:"<<err_y);
+    ROS_WARN_STREAM(" Err_x:"<<err_x<<" Err_y:"<<err_y<<" Err_theta:"<<err_theta*180/M_PI<<"(degree)");
 
     //log << err_y << std::endl;
-    log << r << std::endl;
+    log << r << "," << err_theta << std::endl;
     ++count;
     ROS_INFO_STREAM(count);
 

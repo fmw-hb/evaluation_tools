@@ -5,10 +5,10 @@ from simple_script_server import *
 class simple_run():
     def __init__(self):
         self.sss = simple_script_server()
-        self.station1 = [40, -3, 1.57]
-        self.station2 = [40, -10, -1.57]
-        self.station3 = [39.2, -23, 0]
-        self.num_iterations = 10
+        self.station1 = [25.035, 68.551, -1.574]
+        self.station2 = [-25.499, 7.083, 1.565]
+        self.station3 = [0, 0, 0]
+        self.num_iterations = 1
 
     def gotoStation1(self):
         print "go to station1"        
@@ -30,7 +30,7 @@ class simple_run():
             #rospy.sleep(1.0)
             self.gotoStation2()
             #rospy.sleep(1.0)
-            self.gotoStation3()         
+            #self.gotoStation3()
 
 if __name__ == '__main__':
     rospy.init_node("simple_run")
