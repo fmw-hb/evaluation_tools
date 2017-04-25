@@ -9,6 +9,18 @@
 #include <iostream>
 #include <fstream>
 
+//includes for reading the backups
+#include <boost/filesystem.hpp>
+#include "ipa_long_term_slam/hmm_cell.h"
+#include "ipa_navigation_msgs/HmmSlamBackup.h"
+
+//includes for copying the backups
+#include <sys/sendfile.h>  // sendfile
+#include <fcntl.h>         // open
+#include <unistd.h>        // close
+#include <sys/stat.h>      // fstat
+#include <sys/types.h>     // fstat
+
 
 class ipa_map_comparison_node
 {
@@ -16,9 +28,12 @@ public:
   ipa_map_comparison_node();
   void publish();
 private:
-  nav_msgs::OccupancyGrid ground_truth_map_;
-  nav_msgs::OccupancyGrid map_;
-  void compareMaps();
+  nav_msgs::OccupancyGrid reference_map_;
+  nav_msgs::OccupancyGrid compare_map_;
+  std::map<std::string, double> compareMaps();
+  bool replaceBackup();
+  nav_msgs::OccupancyGrid readBackupMap(std::string path);
+  void writeLogFile(std::map<std::string, double> results);
   ros::Publisher pub_ref_map_;
   ros::Publisher pub_measured_map_;
   std::string eval_file_name_;

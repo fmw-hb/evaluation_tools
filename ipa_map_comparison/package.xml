@@ -47,6 +47,7 @@
   <depend>rospy</depend>
   <depend>rostest</depend>
   <depend>std_msgs</depend>
+  <depend>ipa_long_term_slam</depend>
 
 
 

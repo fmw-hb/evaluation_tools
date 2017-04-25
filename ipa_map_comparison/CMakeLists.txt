@@ -12,7 +12,8 @@ find_package(catkin REQUIRED
     roslib
     rospy
     rostest
-    std_msgs)
+    std_msgs
+    ipa_long_term_slam)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -115,7 +116,9 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
- include_directories(include)
+ include_directories(include
+   ${catkin_INCLUDE_DIRS}
+   )
 
 ## Declare a C++ library
  add_library(ipa_map_comparison
