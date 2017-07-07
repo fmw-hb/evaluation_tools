@@ -8,7 +8,7 @@ class simple_run():
         self.station1 = [25.035, 68.551, -1.574]
         self.station2 = [-25.499, 7.083, 1.565]
         self.station3 = [0, 0, 0]
-        self.num_iterations = 1
+        self.num_iterations = 100000
 
     def gotoStation1(self):
         print "go to station1"        
@@ -30,7 +30,7 @@ class simple_run():
             #rospy.sleep(1.0)
             self.gotoStation2()
             #rospy.sleep(1.0)
-            #self.gotoStation3()
+            self.gotoStation3()
 
 if __name__ == '__main__':
     rospy.init_node("simple_run")
