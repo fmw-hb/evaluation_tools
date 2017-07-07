@@ -8,6 +8,7 @@
   <arg name="eval_file_name" default="eval.txt"/>
   <arg name="min_occ_score" default="0.9"/>
   <arg name="min_free_score" default="0.9"/>
+  <arg name="submap_size" default="50"/>
 
   <!-- Run the map server -->
     <!--node name="map_server_ground_truth" pkg="map_server" type="map_server" args="$(arg ref_map_file)" >
@@ -27,5 +28,6 @@
     <param name="min_free_score" value="$(arg min_free_score)"/>
     <param name="old_map" value="$(arg old_map)"/>
     <param name="new_map" value="$(arg new_map)"/>
+    <param name="submap_size" value="$(arg submap_size)"/>
 </node>
 </launch>

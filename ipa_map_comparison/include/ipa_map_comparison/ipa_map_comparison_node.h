@@ -11,7 +11,7 @@
 
 //includes for reading the backups
 #include <boost/filesystem.hpp>
-#include "ipa_long_term_slam/hmm_cell.h"
+#include "ipa_long_term_slam/mapping/hmm_cell.h"
 #include "ipa_navigation_msgs/HmmSlamBackup.h"
 
 //includes for copying the backups
@@ -30,12 +30,15 @@ public:
 private:
   nav_msgs::OccupancyGrid reference_map_;
   nav_msgs::OccupancyGrid compare_map_;
-  std::map<std::string, double> compareMaps();
-  bool replaceBackup();
+  std::map<std::string, double> compareMaps(nav_msgs::OccupancyGrid& reference_map, nav_msgs::OccupancyGrid& compare_map);
+  bool replaceBackup(std::string old_map, std::string new_map);
   nav_msgs::OccupancyGrid readBackupMap(std::string path);
   void writeLogFile(std::map<std::string, double> results);
+  std::vector<nav_msgs::OccupancyGrid>  splitMap(nav_msgs::OccupancyGrid local_map, int size);
+  nav_msgs::OccupancyGrid* getMapPart(nav_msgs::OccupancyGrid *tmp, int start_x, int start_y, int width, int height);
   ros::Publisher pub_ref_map_;
   ros::Publisher pub_measured_map_;
+  ros::Publisher pub_split_map_;
   std::string eval_file_name_;
   nav_msgs::OccupancyGrid map_2d_msg_;
   nav_msgs::OccupancyGrid ref_2d_msg_;
@@ -43,7 +46,8 @@ private:
   float neighbourhood_score_;
   bool map_eval_started_;
 
-
+  std::vector<nav_msgs::OccupancyGrid> ref_parts_;
+  std::vector<nav_msgs::OccupancyGrid> comp_parts_;
 };
 
 #endif // MAP_COMPARISON_NODE_H
